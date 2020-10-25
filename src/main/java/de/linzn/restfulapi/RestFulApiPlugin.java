@@ -52,9 +52,6 @@ public class RestFulApiPlugin extends STEMPlugin {
             this.getDefaultConfig().set("apiServer.whitelist", list1);
         }
 
-        if (!this.getDefaultConfig().contains("mainServer.whitelist")) {
-            this.getDefaultConfig().set("mainServer.whitelist", list2);
-        }
         this.getDefaultConfig().save();
     }
 
