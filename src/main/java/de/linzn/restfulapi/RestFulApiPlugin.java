@@ -19,14 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class HomeWebAppPlugin extends STEMPlugin {
+public class RestFulApiPlugin extends STEMPlugin {
 
-    public static HomeWebAppPlugin homeWebAppPlugin;
+    public static RestFulApiPlugin restFulApiPlugin;
     public APIWebserver apiWebserver;
 
 
-    public HomeWebAppPlugin() {
-        homeWebAppPlugin = this;
+    public RestFulApiPlugin() {
+        restFulApiPlugin = this;
     }
 
     @Override

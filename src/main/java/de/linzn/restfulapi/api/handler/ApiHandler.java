@@ -14,7 +14,7 @@ package de.linzn.restfulapi.api.handler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import de.linzn.restfulapi.HomeWebAppPlugin;
+import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.get.*;
 import de.linzn.restfulapi.api.jsonapi.post.ChangeAutoModeJSON;
 import de.linzn.restfulapi.api.jsonapi.post.ChangeDeviceJSON;
@@ -51,7 +51,7 @@ public class ApiHandler implements HttpHandler {
     }
 
     private void handleRequests(final HttpExchange he) throws IOException {
-        List<String> whitelist = HomeWebAppPlugin.homeWebAppPlugin.getDefaultConfig().getStringList("apiServer.whitelist");
+        List<String> whitelist = RestFulApiPlugin.restFulApiPlugin.getDefaultConfig().getStringList("apiServer.whitelist");
         String requestingAddress = he.getRemoteAddress().getAddress().getHostName();
 
         boolean matched = false;

@@ -12,7 +12,7 @@
 package de.linzn.restfulapi.api.jsonapi.post;
 
 
-import de.linzn.restfulapi.HomeWebAppPlugin;
+import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.core.IResponseHandler;
 import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
 import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
@@ -55,6 +55,6 @@ public class ExecuteStemCommandJSON implements IResponseHandler {
 
     private void restartCommand() {
         StemRestartOperation stemRestartOperation = new StemRestartOperation();
-        STEMSystemApp.getInstance().getScheduler().runTask(HomeWebAppPlugin.homeWebAppPlugin, stemRestartOperation);
+        STEMSystemApp.getInstance().getScheduler().runTask(RestFulApiPlugin.restFulApiPlugin, stemRestartOperation);
     }
 }
