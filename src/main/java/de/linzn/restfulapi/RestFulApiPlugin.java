@@ -45,9 +45,6 @@ public class RestFulApiPlugin extends STEMPlugin {
         List<String> list1 = new ArrayList<>();
         list1.add("127.0.0.1");
 
-        List<String> list2 = new ArrayList<>();
-        list2.add("127.0.0.1");
-
         if (!this.getDefaultConfig().contains("apiServer.whitelist")) {
             this.getDefaultConfig().set("apiServer.whitelist", list1);
         }
