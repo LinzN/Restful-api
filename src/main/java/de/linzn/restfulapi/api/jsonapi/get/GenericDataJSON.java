@@ -16,6 +16,7 @@ import de.linzn.restfulapi.core.IResponseHandler;
 import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
 import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
 import de.linzn.openJL.math.FloatingPoint;
+import de.linzn.serviceStatus.ServiceStatusPlugin;
 import de.linzn.systemChain.callbacks.NetworkScheduler;
 import org.json.JSONObject;
 
@@ -27,10 +28,20 @@ public class GenericDataJSON implements IResponseHandler {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put("network", getNetworkData());
         jsonObject.put("stem", getStemData());
+        jsonObject.put("servicestatus", getServiceStatus());
 
         JSONTemplate emptyPage = new JSONTemplate();
         emptyPage.setCode(jsonObject);
         return emptyPage;
+    }
+
+    private JSONObject getServiceStatus(){
+        JSONObject jsonObject = new JSONObject();
+        for(String serviceID : ServiceStatusPlugin.serviceStatusPlugin.getDefaultConfig().getStringList("services")){
+            boolean status = ServiceStatusPlugin.serviceStatusPlugin.getServiceStatus(serviceID);
+            jsonObject.put(serviceID, status);
+        }
+        return jsonObject;
     }
 
     private JSONObject getNetworkData() {
