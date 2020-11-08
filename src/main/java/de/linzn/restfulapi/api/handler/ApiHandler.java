@@ -115,6 +115,7 @@ public class ApiHandler implements HttpHandler {
         this.subHandlers.put("json_automode", new AutoModeJSON());
         this.subHandlers.put("json_generic", new GenericDataJSON());
         this.subHandlers.put("json_notification-archive", new NotificationArchiveJSON());
+        this.subHandlers.put("json_service-status", new ServiceStatusJSON());
 
         /* JSON PUSH API */
         this.subHandlers.put("post_change-device-status", new ChangeDeviceJSON());
