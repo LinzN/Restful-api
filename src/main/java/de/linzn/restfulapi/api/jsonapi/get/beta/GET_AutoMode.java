@@ -9,31 +9,34 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
 import de.linzn.homeDevices.DeviceCategory;
 import de.linzn.homeDevices.HomeDevicesPlugin;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class AutoModeJSON implements IResponseHandler {
+public class GET_AutoMode implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object getRequestData(List<String> inputList) {
         JSONObject jsonObject = new JSONObject();
 
         for (DeviceCategory deviceCategory : DeviceCategory.values()) {
             boolean status = HomeDevicesPlugin.homeDevicesPlugin.isAutoMode(deviceCategory);
             jsonObject.put(deviceCategory.name(), status);
         }
+        return jsonObject;
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
 
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "automode";
     }
 }

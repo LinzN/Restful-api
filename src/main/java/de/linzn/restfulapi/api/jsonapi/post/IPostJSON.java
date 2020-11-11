@@ -9,13 +9,13 @@
  *
  */
 
-package de.linzn.restfulapi.core;
-
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
+package de.linzn.restfulapi.api.jsonapi.post;
 
 import java.util.List;
 
-public interface IResponseHandler {
+public interface IPostJSON {
 
-    IHtmlTemplate buildResponse(List<String> inputList);
+    Object postDataRequest(List<String> inputList);
+
+    String name();
 }

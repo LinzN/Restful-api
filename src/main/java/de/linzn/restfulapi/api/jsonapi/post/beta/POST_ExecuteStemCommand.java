@@ -9,13 +9,10 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.post;
-
+package de.linzn.restfulapi.api.jsonapi.post.beta;
 
 import de.linzn.restfulapi.RestFulApiPlugin;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
 import de.linzn.simplyLogger.Color;
 import de.stem.stemSystem.AppLogger;
 import de.stem.stemSystem.STEMSystemApp;
@@ -25,10 +22,9 @@ import org.json.JSONObject;
 import java.util.Date;
 import java.util.List;
 
-public class ExecuteStemCommandJSON implements IResponseHandler {
+public class POST_ExecuteStemCommand implements IPostJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object postDataRequest(List<String> inputList) {
         JSONObject jsonObject = new JSONObject();
 
         String command = inputList.get(1);
@@ -39,9 +35,12 @@ public class ExecuteStemCommandJSON implements IResponseHandler {
         jsonObject.put("status", success);
         jsonObject.put("date", new Date().getTime());
 
-        JSONTemplate emptyPage = new JSONTemplate();
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+        return jsonObject;
+    }
+
+    @Override
+    public String name() {
+        return "execute-stem-command";
     }
 
     private boolean executeCommand(String command) {

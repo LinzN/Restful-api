@@ -9,29 +9,31 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.stem.stemSystem.AppLogger;
 import org.json.JSONArray;
 
 import java.util.List;
 
-public class TerminalJSON implements IResponseHandler {
+public class GET_Terminal implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
-
+    public Object getRequestData(List<String> inputList) {
         JSONArray jsonArray = new JSONArray();
         for (String entry : AppLogger.getLastEntries(30)) {
             jsonArray.put(entry);
         }
+        return jsonArray;
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
 
-        emptyPage.setCode(jsonArray);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "terminal";
     }
 }

@@ -9,14 +9,12 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
 import de.linzn.calender.CalenderPlugin;
 import de.linzn.calender.objects.ICalendarType;
 import de.linzn.calender.objects.TrashType;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import org.json.JSONObject;
 
 import java.text.Format;
@@ -24,9 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class TrashCalendarJSON implements IResponseHandler {
+public class GET_TrashCalendar implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
+    public Object getRequestData(List<String> inputList) {
         JSONObject jsonObject = new JSONObject();
         Format dateFormat = new SimpleDateFormat("EEEE d MMMMM yyyy", Locale.GERMANY);
 
@@ -59,10 +57,16 @@ public class TrashCalendarJSON implements IResponseHandler {
         blueTrashJson.put("date", dateFormat.format(blueTrash.getDate()));
         blueTrashJson.put("type", blueTrash.getType().name());
         jsonObject.put(blueTrash.getType().name(), blueTrashJson);
+        return jsonObject;
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
 
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "trash-calendar";
     }
 }

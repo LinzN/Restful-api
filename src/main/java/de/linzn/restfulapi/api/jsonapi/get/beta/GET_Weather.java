@@ -9,20 +9,18 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
 import de.linzn.localWeather.LocalWeatherPlugin;
 import de.linzn.localWeather.engine.WeatherContainer;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class WeatherJSON implements IResponseHandler {
+public class GET_Weather implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
+    public Object getRequestData(List<String> inputList) {
 
         int weatherID = -1;
         String description = "N.A";
@@ -58,10 +56,16 @@ public class WeatherJSON implements IResponseHandler {
         jsonObject.put("pressure", pressure);
         jsonObject.put("humidity", humidity);
 
+        return jsonObject;
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
 
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "weather";
     }
 }

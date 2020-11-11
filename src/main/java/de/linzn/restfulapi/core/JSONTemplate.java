@@ -9,15 +9,14 @@
  *
  */
 
-package de.linzn.restfulapi.core.htmlTemplates;
+package de.linzn.restfulapi.core;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-public class JSONTemplate implements IHtmlTemplate {
+public class JSONTemplate {
 
     private String generatedPage;
 
@@ -25,17 +24,10 @@ public class JSONTemplate implements IHtmlTemplate {
         this.generatedPage = new JSONObject().put("error", 404).toString();
     }
 
-
-    public void setCode(JSONArray jsonArray) {
-        this.generatedPage = jsonArray.toString();
+    public void setCode(Object object) {
+        this.generatedPage = object.toString();
     }
 
-    public void setCode(JSONObject jsonObject) {
-        this.generatedPage = jsonObject.toString();
-    }
-
-
-    @Override
     public Map<String, String> headerList() {
         Map<String, String> map = new LinkedHashMap<>();
         map.put("Access-Control-Allow-Origin", "*");
@@ -44,16 +36,10 @@ public class JSONTemplate implements IHtmlTemplate {
         return map;
     }
 
-    @Override
-    public void generate() {
-    }
-
-    @Override
     public long length() {
         return this.generatedPage.getBytes().length;
     }
 
-    @Override
     public byte[] getBytes() {
         return this.generatedPage.getBytes();
     }

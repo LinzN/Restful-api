@@ -9,24 +9,20 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.post;
-
+package de.linzn.restfulapi.api.jsonapi.post.beta;
 
 import de.linzn.homeDevices.HomeDevicesPlugin;
 import de.linzn.homeDevices.devices.TasmotaDevice;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
 import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.utils.Color;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class ChangeDeviceJSON implements IResponseHandler {
+public class POST_ChangeDevice implements IPostJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object postDataRequest(List<String> inputList) {
         JSONObject jsonObject = new JSONObject();
 
         String deviceName = inputList.get(1);
@@ -45,8 +41,11 @@ public class ChangeDeviceJSON implements IResponseHandler {
 
         jsonObject.put("status", newStatus);
 
-        JSONTemplate emptyPage = new JSONTemplate();
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+        return jsonObject;
+    }
+
+    @Override
+    public String name() {
+        return "change-device-status";
     }
 }

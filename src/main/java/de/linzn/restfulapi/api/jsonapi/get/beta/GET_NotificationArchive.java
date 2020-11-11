@@ -9,11 +9,9 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.modules.notificationModule.archive.NotificationArchiveObject;
 import org.json.JSONArray;
@@ -24,10 +22,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class NotificationArchiveJSON implements IResponseHandler {
+public class GET_NotificationArchive implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object getRequestData(List<String> inputList) {
         Format dateFormat = new SimpleDateFormat("EEEE d MMMMM yyyy", Locale.GERMANY);
 
         List<NotificationArchiveObject> list = STEMSystemApp.getInstance().getNotificationModule().getNotificationArchive().getLastNotifications();
@@ -44,9 +41,16 @@ public class NotificationArchiveJSON implements IResponseHandler {
             i++;
         }
 
-        JSONTemplate emptyPage = new JSONTemplate();
+        return jsonArray;
+    }
 
-        emptyPage.setCode(jsonArray);
-        return emptyPage;
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
+
+    @Override
+    public String name() {
+        return "notification-archive";
     }
 }

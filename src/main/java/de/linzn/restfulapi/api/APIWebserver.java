@@ -24,13 +24,15 @@ public class APIWebserver {
     private HttpServer apiServer;
     private String hostname;
     private int port;
+    private ApiHandler apiHandler;
 
     public APIWebserver(String host, int port) {
         this.hostname = host;
         this.port = port;
+        this.apiHandler = new ApiHandler();
         try {
             apiServer = HttpServer.create(new InetSocketAddress(host, port), 0);
-            apiServer.createContext("/", new ApiHandler());
+            apiServer.createContext("/", apiHandler);
             apiServer.setExecutor(Executors.newSingleThreadExecutor());
         } catch (IOException e) {
             e.printStackTrace();
@@ -52,5 +54,9 @@ public class APIWebserver {
 
     public int getPort() {
         return port;
+    }
+
+    public ApiHandler getApiHandler() {
+        return this.apiHandler;
     }
 }

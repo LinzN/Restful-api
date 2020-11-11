@@ -9,20 +9,17 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.stem.stemSystem.utils.JavaUtils;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class ResourcesJSON implements IResponseHandler {
+public class GET_Resources implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object getRequestData(List<String> inputList) {
         double load = JavaUtils.getSystemLoad();
         int cores = JavaUtils.getCoreAmount();
 
@@ -39,11 +36,16 @@ public class ResourcesJSON implements IResponseHandler {
         jsonObject.put("memoryLoad", memoryLoad);
         jsonObject.put("memoryTotal", maxMemory);
         jsonObject.put("memoryUsed", usedMemory);
+        return jsonObject;
+    }
 
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
-
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "resources";
     }
 }

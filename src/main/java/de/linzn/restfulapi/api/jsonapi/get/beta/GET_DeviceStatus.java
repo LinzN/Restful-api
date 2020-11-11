@@ -9,31 +9,33 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
 import de.linzn.homeDevices.DeviceStatus;
 import de.linzn.homeDevices.HomeDevicesPlugin;
 import de.linzn.homeDevices.devices.TasmotaDevice;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import org.json.JSONObject;
 
 import java.util.List;
 
-public class DeviceStatusJSON implements IResponseHandler {
+public class GET_DeviceStatus implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
-
+    public Object getRequestData(List<String> inputList) {
         String deviceName = inputList.get(1);
         TasmotaDevice tasmotaDevice = HomeDevicesPlugin.homeDevicesPlugin.getTasmotaDevice(deviceName);
         JSONObject jsonObject = new JSONObject();
+        jsonObject.put("status", tasmotaDevice.getDeviceStatus() == DeviceStatus.ENABLED);
+        return jsonObject;
+    }
 
-        jsonObject.put("status", tasmotaDevice.getDeviceStatus() == DeviceStatus.ENABLED); /* todo fix status enum */
+    @Override
+    public Object getGenericData() {
+        return null;
+    }
 
-        JSONTemplate emptyPage = new JSONTemplate();
-
-        emptyPage.setCode(jsonObject);
-        return emptyPage;
+    @Override
+    public String name() {
+        return "device-status";
     }
 }

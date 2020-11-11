@@ -9,14 +9,12 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get;
+package de.linzn.restfulapi.api.jsonapi.get.beta;
 
 import de.linzn.calender.CalenderPlugin;
 import de.linzn.calender.objects.ICalendarType;
 import de.linzn.calender.objects.TrashType;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -26,9 +24,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class ReminderJSON implements IResponseHandler {
+public class GET_Reminder implements IGetJSON {
     @Override
-    public IHtmlTemplate buildResponse(List<String> inputList) {
+    public Object getRequestData(List<String> inputList) {
         JSONArray jsonArray = new JSONArray();
 
         List<ICalendarType> iCalendarTypes = CalenderPlugin.calenderPlugin.getCalendarManager().getCalenderEntriesList(new Date());
@@ -49,9 +47,16 @@ public class ReminderJSON implements IResponseHandler {
             jsonObject.put("type", iCalendarType.getType().name());
             jsonArray.put(jsonObject);
         }
-        JSONTemplate emptyPage = new JSONTemplate();
+        return jsonArray;
+    }
 
-        emptyPage.setCode(jsonArray);
-        return emptyPage;
+    @Override
+    public Object getGenericData() {
+        return getRequestData(null);
+    }
+
+    @Override
+    public String name() {
+        return "reminder";
     }
 }

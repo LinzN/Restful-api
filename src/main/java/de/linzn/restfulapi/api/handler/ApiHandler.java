@@ -14,34 +14,35 @@ package de.linzn.restfulapi.api.handler;
 import com.sun.net.httpserver.Headers;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import de.linzn.restfulapi.RestFulApiPlugin;
-import de.linzn.restfulapi.api.jsonapi.get.*;
-import de.linzn.restfulapi.api.jsonapi.post.ChangeAutoModeJSON;
-import de.linzn.restfulapi.api.jsonapi.post.ChangeDeviceJSON;
-import de.linzn.restfulapi.api.jsonapi.post.ExecuteStemCommandJSON;
-import de.linzn.restfulapi.core.IResponseHandler;
-import de.linzn.restfulapi.core.htmlTemplates.IHtmlTemplate;
-import de.linzn.restfulapi.core.htmlTemplates.JSONTemplate;
 import de.linzn.openJL.network.IPAddressMatcher;
-import de.stem.stemSystem.AppLogger;
+import de.linzn.restfulapi.RestFulApiPlugin;
+import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.get.beta.*;
+import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
+import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ChangeAutoMode;
+import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ChangeDevice;
+import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ExecuteStemCommand;
+import de.linzn.restfulapi.core.JSONTemplate;
+import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.utils.Color;
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class ApiHandler implements HttpHandler {
 
-    private final Map<String, IResponseHandler> subHandlers;
+    private List<IGetJSON> iGetJSONList;
+    private List<IPostJSON> iPostJSONList;
 
     public ApiHandler() {
-        this.subHandlers = new LinkedHashMap<>();
-        this.registerSubHandlers();
+        this.iGetJSONList = new ArrayList<>();
+        this.iPostJSONList = new ArrayList<>();
+        this.registerInternalHandlers();
     }
 
 
@@ -63,7 +64,7 @@ public class ApiHandler implements HttpHandler {
         }
 
         if (!matched) {
-            AppLogger.debug(Color.RED + "[WEBAPP_API-SERVER] Access deny for " + requestingAddress);
+            STEMSystemApp.LOGGER.ERROR(Color.RED + "[WEBAPP_API-SERVER] Access deny for " + requestingAddress);
             he.close();
             return;
         }
@@ -71,57 +72,83 @@ public class ApiHandler implements HttpHandler {
         String url = he.getRequestURI().getRawPath();
 
         List<String> argsList = Arrays.stream(url.split("/")).filter(arg -> !arg.isEmpty()).collect(Collectors.toList());
-        IHtmlTemplate iHtmlPage = new JSONTemplate();
+        JSONTemplate jsonTemplate = new JSONTemplate();
 
         if (!argsList.isEmpty()) {
             String command = argsList.get(0);
-            if (this.subHandlers.containsKey(command.toLowerCase())) {
-                iHtmlPage = this.subHandlers.get(command.toLowerCase()).buildResponse(argsList);
-            }
-        } else {
-            iHtmlPage = new JSONTemplate();
 
-            JSONArray jsonArray = new JSONArray();
-            for (String key : this.subHandlers.keySet()) {
-                jsonArray.put(key);
+            if (command.toLowerCase().startsWith("get_")) {
+                String split_command = command.replace("get_", "");
+                if (split_command.equalsIgnoreCase("generic")) {
+                    jsonTemplate.setCode(buildGeneric());
+                } else {
+                    for (IGetJSON iGetJSON : this.iGetJSONList) {
+                        if (iGetJSON.name().equalsIgnoreCase(split_command)) {
+                            jsonTemplate.setCode(iGetJSON.getRequestData(argsList));
+                        }
+                    }
+                }
+            } else if (command.toLowerCase().startsWith("post_")) {
+                String split_command = command.replace("post_", "");
+                for (IPostJSON iPostJSON : this.iPostJSONList) {
+                    if (iPostJSON.name().equalsIgnoreCase(split_command)) {
+                        jsonTemplate.setCode(iPostJSON.postDataRequest(argsList));
+                    }
+                }
             }
 
-            ((JSONTemplate) iHtmlPage).setCode(jsonArray);
         }
-
-        iHtmlPage.generate();
 
         Headers h = he.getResponseHeaders();
 
-        for (String key : iHtmlPage.headerList().keySet()) {
-            h.set(key, iHtmlPage.headerList().get(key));
+        for (String key : jsonTemplate.headerList().keySet()) {
+            h.set(key, jsonTemplate.headerList().get(key));
         }
 
-        he.sendResponseHeaders(200, iHtmlPage.length());
+        he.sendResponseHeaders(200, jsonTemplate.length());
         OutputStream os = he.getResponseBody();
-        os.write(iHtmlPage.getBytes());
+        os.write(jsonTemplate.getBytes());
         os.close();
     }
 
-    private void registerSubHandlers() {
-        /* JSON GET API */
-        this.subHandlers.put("json_terminal", new TerminalJSON());
-        this.subHandlers.put("json_weather", new WeatherJSON());
-        this.subHandlers.put("json_resources", new ResourcesJSON());
-        this.subHandlers.put("json_device-status", new DeviceStatusJSON());
-        this.subHandlers.put("json_reminder", new ReminderJSON());
-        this.subHandlers.put("json_notification", new NotificationJSON());
-        this.subHandlers.put("json_trash-calendar", new TrashCalendarJSON());
-        this.subHandlers.put("json_automode", new AutoModeJSON());
-        this.subHandlers.put("json_generic", new GenericDataJSON());
-        this.subHandlers.put("json_notification-archive", new NotificationArchiveJSON());
-        this.subHandlers.put("json_service-status", new ServiceStatusJSON());
-
-        /* JSON PUSH API */
-        this.subHandlers.put("post_change-device-status", new ChangeDeviceJSON());
-        this.subHandlers.put("post_change-automode", new ChangeAutoModeJSON());
-        this.subHandlers.put("post_execute-stem-command", new ExecuteStemCommandJSON());
+    public void addGetHandler(IGetJSON iGetJSON) {
+        this.iGetJSONList.add(iGetJSON);
     }
 
+    public void addPostHandler(IPostJSON iPostJSON) {
+        this.iPostJSONList.add(iPostJSON);
+    }
+
+    private JSONObject buildGeneric() {
+        JSONObject jsonObject = new JSONObject();
+
+        for (IGetJSON iGetJSON : this.iGetJSONList) {
+            Object data = iGetJSON.getGenericData();
+            if (data != null) {
+                jsonObject.put(iGetJSON.name(), data);
+            }
+        }
+        return jsonObject;
+    }
+
+
+    private void registerInternalHandlers() {
+        this.addGetHandler(new GET_AutoMode());
+        this.addGetHandler(new GET_DeviceStatus());
+        this.addGetHandler(new GET_Notification());
+        this.addGetHandler(new GET_NotificationArchive());
+        this.addGetHandler(new GET_Reminder());
+        this.addGetHandler(new GET_Resources());
+        this.addGetHandler(new GET_ServiceStatus());
+        this.addGetHandler(new GET_Terminal());
+        this.addGetHandler(new GET_TrashCalendar());
+        this.addGetHandler(new GET_Weather());
+        this.addGetHandler(new GET_StemStatus());
+        this.addGetHandler(new GET_NetworkStatus());
+
+        this.addPostHandler(new POST_ChangeAutoMode());
+        this.addPostHandler(new POST_ChangeDevice());
+        this.addPostHandler(new POST_ExecuteStemCommand());
+    }
 }
 

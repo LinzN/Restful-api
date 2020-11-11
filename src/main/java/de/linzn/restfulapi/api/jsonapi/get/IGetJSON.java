@@ -9,17 +9,15 @@
  *
  */
 
-package de.linzn.restfulapi.core.htmlTemplates;
+package de.linzn.restfulapi.api.jsonapi.get;
 
-import java.util.Map;
+import java.util.List;
 
-public interface IHtmlTemplate {
+public interface IGetJSON {
 
-    Map<String, String> headerList();
+    Object getRequestData(List<String> inputList);
 
-    void generate();
+    Object getGenericData();
 
-    long length();
-
-    byte[] getBytes();
+    String name();
 }
