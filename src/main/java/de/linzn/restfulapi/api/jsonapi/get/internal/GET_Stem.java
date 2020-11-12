@@ -9,22 +9,20 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get.beta;
+package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
-import de.stem.stemSystem.AppLogger;
-import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class GET_Terminal implements IGetJSON {
+public class GET_Stem implements IGetJSON {
     @Override
     public Object getRequestData(List<String> inputList) {
-        JSONArray jsonArray = new JSONArray();
-        for (String entry : AppLogger.getLastEntries(30)) {
-            jsonArray.put(entry);
-        }
-        return jsonArray;
+        JSONObject jsonObject = new JSONObject();
+
+        jsonObject.put("status", "OK");
+        return jsonObject;
     }
 
     @Override
@@ -34,6 +32,6 @@ public class GET_Terminal implements IGetJSON {
 
     @Override
     public String name() {
-        return "terminal";
+        return "stem";
     }
 }

@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get.beta;
+package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.linzn.serviceStatus.ServiceStatusPlugin;
@@ -17,7 +17,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
-public class GET_ServiceStatus implements IGetJSON {
+public class GET_Service implements IGetJSON {
     @Override
     public Object getRequestData(List<String> inputList) {
         String serviceID = inputList.get(1);
@@ -42,6 +42,6 @@ public class GET_ServiceStatus implements IGetJSON {
 
     @Override
     public String name() {
-        return "service-status";
+        return "service";
     }
 }

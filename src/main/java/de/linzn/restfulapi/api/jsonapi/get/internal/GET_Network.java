@@ -9,18 +9,21 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get.beta;
+package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
-import org.json.JSONArray;
+import de.linzn.systemChain.callbacks.NetworkScheduler;
+import org.json.JSONObject;
 
 import java.util.List;
 
-public class GET_Notification implements IGetJSON {
+public class GET_Network implements IGetJSON {
     @Override
     public Object getRequestData(List<String> inputList) {
-        JSONArray jsonArray = new JSONArray();
-        return jsonArray;
+        JSONObject jsonObject = new JSONObject();
+        float ping = NetworkScheduler.getLastPing();
+        jsonObject.put("ping", ping);
+        return jsonObject;
     }
 
     @Override
@@ -30,6 +33,6 @@ public class GET_Notification implements IGetJSON {
 
     @Override
     public String name() {
-        return "notification";
+        return "network";
     }
 }

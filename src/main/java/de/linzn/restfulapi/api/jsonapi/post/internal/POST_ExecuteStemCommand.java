@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.post.beta;
+package de.linzn.restfulapi.api.jsonapi.post.internal;
 
 import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;

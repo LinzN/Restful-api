@@ -17,14 +17,13 @@ import com.sun.net.httpserver.HttpHandler;
 import de.linzn.openJL.network.IPAddressMatcher;
 import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
-import de.linzn.restfulapi.api.jsonapi.get.beta.*;
+import de.linzn.restfulapi.api.jsonapi.get.internal.*;
 import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
-import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ChangeAutoMode;
-import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ChangeDevice;
-import de.linzn.restfulapi.api.jsonapi.post.beta.POST_ExecuteStemCommand;
+import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ChangeAutoMode;
+import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ChangeDevice;
+import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ExecuteStemCommand;
 import de.linzn.restfulapi.core.JSONTemplate;
 import de.stem.stemSystem.STEMSystemApp;
-import de.stem.stemSystem.utils.Color;
 import org.json.JSONObject;
 
 import java.io.IOException;
@@ -64,7 +63,7 @@ public class ApiHandler implements HttpHandler {
         }
 
         if (!matched) {
-            STEMSystemApp.LOGGER.ERROR(Color.RED + "[WEBAPP_API-SERVER] Access deny for " + requestingAddress);
+            STEMSystemApp.LOGGER.ERROR("[REST_API] Access deny for " + requestingAddress);
             he.close();
             return;
         }
@@ -96,7 +95,6 @@ public class ApiHandler implements HttpHandler {
                     }
                 }
             }
-
         }
 
         Headers h = he.getResponseHeaders();
@@ -139,12 +137,12 @@ public class ApiHandler implements HttpHandler {
         this.addGetHandler(new GET_NotificationArchive());
         this.addGetHandler(new GET_Reminder());
         this.addGetHandler(new GET_Resources());
-        this.addGetHandler(new GET_ServiceStatus());
+        this.addGetHandler(new GET_Service());
         this.addGetHandler(new GET_Terminal());
         this.addGetHandler(new GET_TrashCalendar());
         this.addGetHandler(new GET_Weather());
-        this.addGetHandler(new GET_StemStatus());
-        this.addGetHandler(new GET_NetworkStatus());
+        this.addGetHandler(new GET_Stem());
+        this.addGetHandler(new GET_Network());
 
         this.addPostHandler(new POST_ChangeAutoMode());
         this.addPostHandler(new POST_ChangeDevice());

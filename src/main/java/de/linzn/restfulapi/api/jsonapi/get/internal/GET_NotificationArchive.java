@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.get.beta;
+package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.stem.stemSystem.STEMSystemApp;

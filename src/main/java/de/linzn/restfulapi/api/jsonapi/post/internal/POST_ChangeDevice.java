@@ -9,7 +9,7 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.post.beta;
+package de.linzn.restfulapi.api.jsonapi.post.internal;
 
 import de.linzn.homeDevices.HomeDevicesPlugin;
 import de.linzn.homeDevices.devices.TasmotaDevice;
