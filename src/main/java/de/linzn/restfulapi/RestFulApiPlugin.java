@@ -24,7 +24,7 @@ import java.util.List;
 public class RestFulApiPlugin extends STEMPlugin {
 
     public static RestFulApiPlugin restFulApiPlugin;
-    public APIWebserver apiWebserver;
+    private APIWebserver apiWebserver;
 
 
     public RestFulApiPlugin() {

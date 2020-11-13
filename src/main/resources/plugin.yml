@@ -1,4 +1,4 @@
 main: de.linzn.restfulapi.RestFulApiPlugin
 name: restful-api
 version: ${project.version}
-depend: [ local-weather, home-devices, calender, system-chain, service-status ]
+depend: [local-weather, home-devices, calender, system-chain]
