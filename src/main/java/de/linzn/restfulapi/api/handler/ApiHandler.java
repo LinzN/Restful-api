@@ -133,7 +133,6 @@ public class ApiHandler implements HttpHandler {
         this.addGetHandler(new GET_NotificationArchive());
         this.addGetHandler(new GET_Resources());
         this.addGetHandler(new GET_Terminal());
-        this.addGetHandler(new GET_Weather());
         this.addGetHandler(new GET_Stem());
         this.addGetHandler(new GET_Network());
 
