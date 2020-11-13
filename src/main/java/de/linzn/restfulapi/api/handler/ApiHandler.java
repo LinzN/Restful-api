@@ -19,8 +19,6 @@ import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
 import de.linzn.restfulapi.api.jsonapi.get.internal.*;
 import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
-import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ChangeAutoMode;
-import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ChangeDevice;
 import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ExecuteStemCommand;
 import de.linzn.restfulapi.core.JSONTemplate;
 import de.stem.stemSystem.STEMSystemApp;
@@ -131,8 +129,6 @@ public class ApiHandler implements HttpHandler {
 
 
     private void registerInternalHandlers() {
-        this.addGetHandler(new GET_AutoMode());
-        this.addGetHandler(new GET_DeviceStatus());
         this.addGetHandler(new GET_Notification());
         this.addGetHandler(new GET_NotificationArchive());
         this.addGetHandler(new GET_Resources());
@@ -141,8 +137,6 @@ public class ApiHandler implements HttpHandler {
         this.addGetHandler(new GET_Stem());
         this.addGetHandler(new GET_Network());
 
-        this.addPostHandler(new POST_ChangeAutoMode());
-        this.addPostHandler(new POST_ChangeDevice());
         this.addPostHandler(new POST_ExecuteStemCommand());
     }
 }
