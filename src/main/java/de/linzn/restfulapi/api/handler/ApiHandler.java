@@ -129,7 +129,6 @@ public class ApiHandler implements HttpHandler {
 
 
     private void registerInternalHandlers() {
-        this.addGetHandler(new GET_Notification());
         this.addGetHandler(new GET_NotificationArchive());
         this.addGetHandler(new GET_Resources());
         this.addGetHandler(new GET_Terminal());
