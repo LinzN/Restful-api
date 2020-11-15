@@ -47,6 +47,12 @@ public class POST_ExecuteStemCommand implements IPostJSON {
         if (command.equalsIgnoreCase("restart")) {
             restartCommand();
             return true;
+        } else if (command.equalsIgnoreCase("verbose")) {
+            boolean value = AppLogger.getVerbose();
+            value = !value;
+            STEMSystemApp.LOGGER.LIVE("Set verbose to " + value);
+            AppLogger.setVerbose(value);
+            return true;
         } else {
             return false;
         }
@@ -56,4 +62,6 @@ public class POST_ExecuteStemCommand implements IPostJSON {
         StemRestartOperation stemRestartOperation = new StemRestartOperation();
         STEMSystemApp.getInstance().getScheduler().runTask(RestFulApiPlugin.restFulApiPlugin, stemRestartOperation);
     }
+
+
 }
