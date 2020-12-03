@@ -24,8 +24,7 @@ import de.linzn.restfulapi.core.JSONTemplate;
 import de.stem.stemSystem.STEMSystemApp;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -69,7 +68,7 @@ public class ApiHandler implements HttpHandler {
         List<String> argsList = Arrays.stream(url.split("/")).filter(arg -> !arg.isEmpty()).collect(Collectors.toList());
         JSONTemplate jsonTemplate = new JSONTemplate();
 
-        Map<String, String> postQueryData = queryToMap(he.getRequestURI().getQuery());
+        Map<String, String> postQueryData = queryToMap(he);
 
         if (!argsList.isEmpty()) {
             String command = argsList.get(0);
@@ -142,9 +141,11 @@ public class ApiHandler implements HttpHandler {
         return jsonObject;
     }
 
-    private Map<String, String> queryToMap(String query) {
+    private Map<String, String> queryToMap(HttpExchange httpExchange) {
+        String query = httpExchange.getRequestURI().getQuery();
         Map<String, String> result = new HashMap<>();
         if(query != null) {
+            STEMSystemApp.LOGGER.LIVE(query);
             for (String param : query.split("&")) {
                 String[] entry = param.split("=");
                 if (entry.length > 1) {
@@ -154,6 +155,18 @@ public class ApiHandler implements HttpHandler {
                 }
             }
         }
+
+        InputStream input = httpExchange.getRequestBody();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        new BufferedReader(new InputStreamReader(input))
+                .lines()
+                .forEach( (String s) -> stringBuilder.append(s + "\n") );
+
+        if(!stringBuilder.toString().isEmpty()) {
+            result.put("requestBody", stringBuilder.toString());
+        }
+
         return result;
     }
 }
