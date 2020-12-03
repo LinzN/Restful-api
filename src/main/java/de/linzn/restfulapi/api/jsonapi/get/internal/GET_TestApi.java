@@ -13,6 +13,7 @@ package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.stem.stemSystem.STEMSystemApp;
 import org.json.JSONObject;
 
 public class GET_TestApi implements IRequest {
@@ -22,6 +23,7 @@ public class GET_TestApi implements IRequest {
 
         jsonObject.put("subChannels", requestData.getSubChannels());
         jsonObject.put("postQueryData", requestData.getPostQueryData());
+        STEMSystemApp.LOGGER.LIVE("TEST-API: " + jsonObject.toString());
         return jsonObject;
     }
 

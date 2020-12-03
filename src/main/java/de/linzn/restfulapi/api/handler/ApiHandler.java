@@ -145,7 +145,6 @@ public class ApiHandler implements HttpHandler {
         String query = httpExchange.getRequestURI().getQuery();
         Map<String, String> result = new HashMap<>();
         if(query != null) {
-            STEMSystemApp.LOGGER.LIVE(query);
             for (String param : query.split("&")) {
                 String[] entry = param.split("=");
                 if (entry.length > 1) {
