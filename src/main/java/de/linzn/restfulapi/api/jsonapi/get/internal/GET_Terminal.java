@@ -11,25 +11,19 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.AppLogger;
 import org.json.JSONArray;
 
-import java.util.List;
-
-public class GET_Terminal implements IGetJSON {
+public class GET_Terminal implements IRequest {
     @Override
-    public Object getRequestData(List<String> inputList) {
+    public Object proceedRequestData(RequestData requestData) {
         JSONArray jsonArray = new JSONArray();
         for (String entry : AppLogger.getLastEntries(30)) {
             jsonArray.put(entry);
         }
         return jsonArray;
-    }
-
-    @Override
-    public Object getGenericData() {
-        return null;
     }
 
     @Override

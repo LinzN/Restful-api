@@ -12,7 +12,8 @@
 package de.linzn.restfulapi.api.jsonapi.post.internal;
 
 import de.linzn.restfulapi.RestFulApiPlugin;
-import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.linzn.simplyLogger.Color;
 import de.stem.stemSystem.AppLogger;
 import de.stem.stemSystem.STEMSystemApp;
@@ -20,15 +21,14 @@ import de.stem.stemSystem.taskManagment.operations.defaultOperations.StemRestart
 import org.json.JSONObject;
 
 import java.util.Date;
-import java.util.List;
 
-public class POST_ExecuteStemCommand implements IPostJSON {
+public class POST_ExecuteStemCommand implements IRequest {
     @Override
-    public Object postDataRequest(List<String> inputList) {
+    public Object proceedRequestData(RequestData requestData) {
         JSONObject jsonObject = new JSONObject();
 
-        String command = inputList.get(1);
-        AppLogger.debug(Color.GREEN + "[API-SERVER] Post Request: StemCommand::" + command);
+        String command = requestData.getSubChannels().get(0);
+        STEMSystemApp.LOGGER.DEBUG(Color.GREEN + "[API-SERVER] Post Request: StemCommand::" + command);
 
         boolean success = executeCommand(command);
         jsonObject.put("command", command);

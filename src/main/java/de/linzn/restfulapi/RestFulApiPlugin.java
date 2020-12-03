@@ -13,8 +13,7 @@ package de.linzn.restfulapi;
 
 
 import de.linzn.restfulapi.api.APIWebserver;
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
-import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.modules.pluginModule.STEMPlugin;
 
 import java.util.ArrayList;
@@ -54,12 +53,12 @@ public class RestFulApiPlugin extends STEMPlugin {
         this.getDefaultConfig().save();
     }
 
-    public void registerIGetJSONClass(IGetJSON iGetJSON) {
-        this.apiWebserver.getApiHandler().addGetHandler(iGetJSON);
+    public void registerIGetJSONClass(IRequest iRequest) {
+        this.apiWebserver.getApiHandler().addGetHandler(iRequest);
     }
 
-    public void registerIPostJSONClass(IPostJSON iPostJSON) {
-        this.apiWebserver.getApiHandler().addPostHandler(iPostJSON);
+    public void registerIPostJSONClass(IRequest iRequest) {
+        this.apiWebserver.getApiHandler().addPostHandler(iRequest);
     }
 
 }

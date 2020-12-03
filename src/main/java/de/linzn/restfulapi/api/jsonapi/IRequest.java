@@ -9,13 +9,15 @@
  *
  */
 
-package de.linzn.restfulapi.api.jsonapi.post;
+package de.linzn.restfulapi.api.jsonapi;
 
-import java.util.List;
+public interface IRequest {
 
-public interface IPostJSON {
+    Object proceedRequestData(RequestData requestData);
 
-    Object postDataRequest(List<String> inputList);
+    default Object genericData(){
+        throw new IllegalArgumentException("Generic is not supported");
+    }
 
     String name();
 }

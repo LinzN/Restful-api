@@ -11,15 +11,14 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.linzn.systemChain.callbacks.NetworkScheduler;
 import org.json.JSONObject;
 
-import java.util.List;
-
-public class GET_Network implements IGetJSON {
+public class GET_Network implements IRequest {
     @Override
-    public Object getRequestData(List<String> inputList) {
+    public Object proceedRequestData(RequestData requestData) {
         JSONObject jsonObject = new JSONObject();
         float ping = NetworkScheduler.getLastPing();
         jsonObject.put("ping", ping);
@@ -27,8 +26,8 @@ public class GET_Network implements IGetJSON {
     }
 
     @Override
-    public Object getGenericData() {
-        return getRequestData(null);
+    public Object genericData() {
+        return proceedRequestData(null);
     }
 
     @Override

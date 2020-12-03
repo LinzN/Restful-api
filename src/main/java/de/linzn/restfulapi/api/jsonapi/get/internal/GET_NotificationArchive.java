@@ -11,7 +11,8 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.modules.notificationModule.archive.NotificationArchiveObject;
 import org.json.JSONArray;
@@ -22,9 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-public class GET_NotificationArchive implements IGetJSON {
+public class GET_NotificationArchive implements IRequest {
     @Override
-    public Object getRequestData(List<String> inputList) {
+    public Object proceedRequestData(RequestData requestData) {
         Format dateFormat = new SimpleDateFormat("EEEE d MMMMM yyyy", Locale.GERMANY);
 
         List<NotificationArchiveObject> list = STEMSystemApp.getInstance().getNotificationModule().getNotificationArchive().getLastNotifications();
@@ -45,8 +46,8 @@ public class GET_NotificationArchive implements IGetJSON {
     }
 
     @Override
-    public Object getGenericData() {
-        return getRequestData(null);
+    public Object genericData() {
+        return proceedRequestData(null);
     }
 
     @Override

@@ -11,15 +11,14 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.utils.JavaUtils;
 import org.json.JSONObject;
 
-import java.util.List;
-
-public class GET_Resources implements IGetJSON {
+public class GET_Resources implements IRequest {
     @Override
-    public Object getRequestData(List<String> inputList) {
+    public Object proceedRequestData(RequestData requestData) {
         double load = JavaUtils.getSystemLoad();
         int cores = JavaUtils.getCoreAmount();
 
@@ -40,8 +39,8 @@ public class GET_Resources implements IGetJSON {
     }
 
     @Override
-    public Object getGenericData() {
-        return getRequestData(null);
+    public Object genericData() {
+        return proceedRequestData(null);
     }
 
     @Override

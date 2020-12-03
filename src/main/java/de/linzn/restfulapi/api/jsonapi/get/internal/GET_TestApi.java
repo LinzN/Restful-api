@@ -11,26 +11,22 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
-import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
 import org.json.JSONObject;
 
-public class GET_Stem implements IRequest {
+public class GET_TestApi implements IRequest {
     @Override
     public Object proceedRequestData(RequestData requestData) {
         JSONObject jsonObject = new JSONObject();
 
-        jsonObject.put("status", "OK");
+        jsonObject.put("subChannels", requestData.getSubChannels());
+        jsonObject.put("postQueryData", requestData.getPostQueryData());
         return jsonObject;
     }
 
     @Override
-    public Object genericData() {
-        return proceedRequestData(null);
-    }
-
-    @Override
     public String name() {
-        return "stem";
+        return "test-api";
     }
 }

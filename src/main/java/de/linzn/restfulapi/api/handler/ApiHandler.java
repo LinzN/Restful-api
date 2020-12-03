@@ -16,9 +16,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import de.linzn.openJL.network.IPAddressMatcher;
 import de.linzn.restfulapi.RestFulApiPlugin;
-import de.linzn.restfulapi.api.jsonapi.get.IGetJSON;
+import de.linzn.restfulapi.api.jsonapi.IRequest;
+import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.get.internal.*;
-import de.linzn.restfulapi.api.jsonapi.post.IPostJSON;
 import de.linzn.restfulapi.api.jsonapi.post.internal.POST_ExecuteStemCommand;
 import de.linzn.restfulapi.core.JSONTemplate;
 import de.stem.stemSystem.STEMSystemApp;
@@ -26,19 +26,17 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ApiHandler implements HttpHandler {
 
-    private List<IGetJSON> iGetJSONList;
-    private List<IPostJSON> iPostJSONList;
+    private List<IRequest> getList;
+    private List<IRequest> postList;
 
     public ApiHandler() {
-        this.iGetJSONList = new ArrayList<>();
-        this.iPostJSONList = new ArrayList<>();
+        this.getList = new ArrayList<>();
+        this.postList = new ArrayList<>();
         this.registerInternalHandlers();
     }
 
@@ -71,25 +69,28 @@ public class ApiHandler implements HttpHandler {
         List<String> argsList = Arrays.stream(url.split("/")).filter(arg -> !arg.isEmpty()).collect(Collectors.toList());
         JSONTemplate jsonTemplate = new JSONTemplate();
 
+        Map<String, String> postQueryData = queryToMap(he.getRequestURI().getQuery());
+
         if (!argsList.isEmpty()) {
             String command = argsList.get(0);
+            argsList.remove(0);
 
             if (command.toLowerCase().startsWith("get_")) {
-                String split_command = command.replace("get_", "");
+                String split_command = command.substring(4);
                 if (split_command.equalsIgnoreCase("generic")) {
                     jsonTemplate.setCode(buildGeneric());
                 } else {
-                    for (IGetJSON iGetJSON : this.iGetJSONList) {
-                        if (iGetJSON.name().equalsIgnoreCase(split_command)) {
-                            jsonTemplate.setCode(iGetJSON.getRequestData(argsList));
+                    for (IRequest iRequest : this.getList) {
+                        if (iRequest.name().equalsIgnoreCase(split_command)) {
+                            jsonTemplate.setCode(iRequest.proceedRequestData(new RequestData(argsList, postQueryData)));
                         }
                     }
                 }
             } else if (command.toLowerCase().startsWith("post_")) {
-                String split_command = command.replace("post_", "");
-                for (IPostJSON iPostJSON : this.iPostJSONList) {
+                String split_command = command.substring(5);
+                for (IRequest iPostJSON : this.postList) {
                     if (iPostJSON.name().equalsIgnoreCase(split_command)) {
-                        jsonTemplate.setCode(iPostJSON.postDataRequest(argsList));
+                        jsonTemplate.setCode(iPostJSON.proceedRequestData(new RequestData(argsList, postQueryData)));
                     }
                 }
             }
@@ -107,26 +108,13 @@ public class ApiHandler implements HttpHandler {
         os.close();
     }
 
-    public void addGetHandler(IGetJSON iGetJSON) {
-        this.iGetJSONList.add(iGetJSON);
+    public void addGetHandler(IRequest iRequest) {
+        this.getList.add(iRequest);
     }
 
-    public void addPostHandler(IPostJSON iPostJSON) {
-        this.iPostJSONList.add(iPostJSON);
+    public void addPostHandler(IRequest iRequest) {
+        this.postList.add(iRequest);
     }
-
-    private JSONObject buildGeneric() {
-        JSONObject jsonObject = new JSONObject();
-
-        for (IGetJSON iGetJSON : this.iGetJSONList) {
-            Object data = iGetJSON.getGenericData();
-            if (data != null) {
-                jsonObject.put(iGetJSON.name(), data);
-            }
-        }
-        return jsonObject;
-    }
-
 
     private void registerInternalHandlers() {
         this.addGetHandler(new GET_NotificationArchive());
@@ -134,8 +122,39 @@ public class ApiHandler implements HttpHandler {
         this.addGetHandler(new GET_Terminal());
         this.addGetHandler(new GET_Stem());
         this.addGetHandler(new GET_Network());
+        this.addGetHandler(new GET_TestApi());
 
         this.addPostHandler(new POST_ExecuteStemCommand());
+    }
+
+    private JSONObject buildGeneric() {
+        JSONObject jsonObject = new JSONObject();
+
+        for (IRequest iRequest : this.getList) {
+            try {
+                Object data = iRequest.genericData();
+                if (data != null) {
+                    jsonObject.put(iRequest.name(), data);
+                }
+            } catch (IllegalArgumentException ignored) {
+            }
+        }
+        return jsonObject;
+    }
+
+    private Map<String, String> queryToMap(String query) {
+        Map<String, String> result = new HashMap<>();
+        if(query != null) {
+            for (String param : query.split("&")) {
+                String[] entry = param.split("=");
+                if (entry.length > 1) {
+                    result.put(entry[0], entry[1]);
+                } else {
+                    result.put(entry[0], "");
+                }
+            }
+        }
+        return result;
     }
 }
 
