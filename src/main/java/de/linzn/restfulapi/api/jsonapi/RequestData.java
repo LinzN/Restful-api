@@ -11,16 +11,19 @@
 
 package de.linzn.restfulapi.api.jsonapi;
 
+import java.net.InetSocketAddress;
 import java.util.List;
 import java.util.Map;
 
 public class RequestData {
     private List<String> subChannels;
     private Map<String, String> postQueryData;
+    private InetSocketAddress inetSocketAddress;
 
-    public RequestData(List<String> subChannels, Map<String, String> postQueryData) {
+    public RequestData(List<String> subChannels, Map<String, String> postQueryData, InetSocketAddress inetSocketAddress) {
         this.subChannels = subChannels;
         this.postQueryData = postQueryData;
+        this.inetSocketAddress = inetSocketAddress;
     }
 
     public List<String> getSubChannels() {
@@ -29,5 +32,9 @@ public class RequestData {
 
     public Map<String, String> getPostQueryData() {
         return postQueryData;
+    }
+
+    public InetSocketAddress getInetSocketAddress() {
+        return inetSocketAddress;
     }
 }

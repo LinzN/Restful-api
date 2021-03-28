@@ -81,7 +81,7 @@ public class ApiHandler implements HttpHandler {
                 } else {
                     for (IRequest iRequest : this.getList) {
                         if (iRequest.name().equalsIgnoreCase(split_command)) {
-                            jsonTemplate.setCode(iRequest.proceedRequestData(new RequestData(argsList, postQueryData)));
+                            jsonTemplate.setCode(iRequest.proceedRequestData(new RequestData(argsList, postQueryData, he.getRemoteAddress())));
                         }
                     }
                 }
@@ -89,7 +89,7 @@ public class ApiHandler implements HttpHandler {
                 String split_command = command.substring(5);
                 for (IRequest iPostJSON : this.postList) {
                     if (iPostJSON.name().equalsIgnoreCase(split_command)) {
-                        jsonTemplate.setCode(iPostJSON.proceedRequestData(new RequestData(argsList, postQueryData)));
+                        jsonTemplate.setCode(iPostJSON.proceedRequestData(new RequestData(argsList, postQueryData, he.getRemoteAddress())));
                     }
                 }
             }
