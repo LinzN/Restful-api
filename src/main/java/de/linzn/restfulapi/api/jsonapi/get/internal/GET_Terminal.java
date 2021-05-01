@@ -13,14 +13,14 @@ package de.linzn.restfulapi.api.jsonapi.get.internal;
 
 import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
-import de.stem.stemSystem.AppLogger;
+import de.stem.stemSystem.STEMSystemApp;
 import org.json.JSONArray;
 
 public class GET_Terminal implements IRequest {
     @Override
     public Object proceedRequestData(RequestData requestData) {
         JSONArray jsonArray = new JSONArray();
-        for (String entry : AppLogger.getLastEntries(30)) {
+        for (String entry : STEMSystemApp.LOGGER.getLastEntries(30)) {
             jsonArray.put(entry);
         }
         return jsonArray;

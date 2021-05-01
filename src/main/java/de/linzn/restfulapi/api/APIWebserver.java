@@ -14,6 +14,7 @@ package de.linzn.restfulapi.api;
 
 import com.sun.net.httpserver.HttpServer;
 import de.linzn.restfulapi.api.handler.ApiHandler;
+import de.stem.stemSystem.STEMSystemApp;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -35,8 +36,7 @@ public class APIWebserver {
             apiServer.createContext("/", apiHandler);
             apiServer.setExecutor(Executors.newSingleThreadExecutor());
         } catch (IOException e) {
-            e.printStackTrace();
-
+            STEMSystemApp.LOGGER.ERROR(e);
         }
     }
 

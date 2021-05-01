@@ -15,7 +15,7 @@ import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.linzn.simplyLogger.Color;
-import de.stem.stemSystem.AppLogger;
+import de.linzn.simplyLogger.LOGLEVEL;
 import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.taskManagment.operations.defaultOperations.StemRestartOperation;
 import org.json.JSONObject;
@@ -48,10 +48,10 @@ public class POST_ExecuteStemCommand implements IRequest {
             restartCommand();
             return true;
         } else if (command.equalsIgnoreCase("verbose")) {
-            boolean value = AppLogger.getVerbose();
+            boolean value = STEMSystemApp.logSystem.getLogLevel() == LOGLEVEL.DEBUG;
             value = !value;
             STEMSystemApp.LOGGER.LIVE("Set verbose to " + value);
-            AppLogger.setVerbose(value);
+            STEMSystemApp.logSystem.setLogLevel(value ? LOGLEVEL.DEBUG : LOGLEVEL.INFO);
             return true;
         } else {
             return false;
