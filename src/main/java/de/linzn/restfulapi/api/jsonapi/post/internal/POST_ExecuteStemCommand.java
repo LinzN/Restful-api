@@ -15,12 +15,12 @@ import de.linzn.restfulapi.RestFulApiPlugin;
 import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.linzn.simplyLogger.Color;
-import de.linzn.simplyLogger.LOGLEVEL;
 import de.stem.stemSystem.STEMSystemApp;
 import de.stem.stemSystem.taskManagment.operations.defaultOperations.StemRestartOperation;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.logging.Level;
 
 public class POST_ExecuteStemCommand implements IRequest {
     @Override
@@ -48,10 +48,10 @@ public class POST_ExecuteStemCommand implements IRequest {
             restartCommand();
             return true;
         } else if (command.equalsIgnoreCase("verbose")) {
-            boolean value = STEMSystemApp.logSystem.getLogLevel() == LOGLEVEL.DEBUG;
+            boolean value = STEMSystemApp.logSystem.getLogLevel() == Level.ALL;
             value = !value;
             STEMSystemApp.LOGGER.LIVE("Set verbose to " + value);
-            STEMSystemApp.logSystem.setLogLevel(value ? LOGLEVEL.DEBUG : LOGLEVEL.INFO);
+            STEMSystemApp.logSystem.setLogLevel(value ? Level.ALL : Level.INFO);
             return true;
         } else {
             return false;
