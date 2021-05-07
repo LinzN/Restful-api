@@ -51,7 +51,7 @@ public class POST_ExecuteStemCommand implements IRequest {
             boolean value = STEMSystemApp.logSystem.getLogLevel() == Level.ALL;
             value = !value;
             STEMSystemApp.LOGGER.LIVE("Set verbose to " + value);
-            STEMSystemApp.logSystem.setLogLevel(value ? Level.ALL : Level.INFO);
+            STEMSystemApp.logSystem.setLogLevel(value ? Level.ALL : STEMSystemApp.getInstance().getConfiguration().logLevel);
             return true;
         } else {
             return false;
