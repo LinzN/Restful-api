@@ -16,12 +16,14 @@ import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.STEMSystemApp;
 import org.json.JSONArray;
 
+import java.util.logging.LogRecord;
+
 public class GET_Terminal implements IRequest {
     @Override
     public Object proceedRequestData(RequestData requestData) {
         JSONArray jsonArray = new JSONArray();
-        for (String entry : STEMSystemApp.LOGGER.getLastEntries(30)) {
-            jsonArray.put(entry);
+        for (LogRecord entry : STEMSystemApp.LOGGER.getLastEntries(30)) {
+            jsonArray.put(STEMSystemApp.logSystem.htmlFormatter.format(entry));
         }
         return jsonArray;
     }
