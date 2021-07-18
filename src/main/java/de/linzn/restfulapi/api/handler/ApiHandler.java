@@ -133,7 +133,9 @@ public class ApiHandler implements HttpHandler {
     private JSONObject buildGeneric() {
         JSONObject jsonObject = new JSONObject();
 
-        for (IRequest iRequest : this.getList) {
+        List<IRequest> list = this.getList;
+        for (int i = 0, listSize = list.size(); i < listSize; i++) {
+            IRequest iRequest = list.get(i);
             try {
                 Object data = iRequest.genericData();
                 if (data != null) {
