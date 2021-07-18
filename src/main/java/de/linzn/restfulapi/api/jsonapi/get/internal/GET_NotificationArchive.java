@@ -14,7 +14,7 @@ package de.linzn.restfulapi.api.jsonapi.get.internal;
 import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.STEMSystemApp;
-import de.stem.stemSystem.modules.notificationModule.archive.NotificationArchiveObject;
+import de.stem.stemSystem.modules.notificationModule.archive.ArchivedNotification;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -28,11 +28,11 @@ public class GET_NotificationArchive implements IRequest {
     public Object proceedRequestData(RequestData requestData) {
         Format dateFormat = new SimpleDateFormat("EEEE d MMMMM yyyy", Locale.GERMANY);
 
-        List<NotificationArchiveObject> list = STEMSystemApp.getInstance().getNotificationModule().getNotificationArchive().getLastNotifications();
+        List<ArchivedNotification> list = STEMSystemApp.getInstance().getNotificationModule().getNotificationArchive().getLastNotifications();
 
         JSONArray jsonArray = new JSONArray();
         int i = 1;
-        for (NotificationArchiveObject notificationArchiveObject : list) {
+        for (ArchivedNotification notificationArchiveObject : list) {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("id", i);
             jsonObject.put("source", notificationArchiveObject.source);
