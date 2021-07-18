@@ -41,8 +41,12 @@ public class ApiHandler implements HttpHandler {
 
 
     @Override
-    public void handle(HttpExchange he) throws IOException {
-        handleRequests(he);
+    public void handle(HttpExchange he) {
+        try {
+            handleRequests(he);
+        } catch (Exception e) {
+            STEMSystemApp.LOGGER.ERROR(e);
+        }
     }
 
     private void handleRequests(final HttpExchange he) throws IOException {
@@ -144,7 +148,7 @@ public class ApiHandler implements HttpHandler {
     private Map<String, String> queryToMap(HttpExchange httpExchange) {
         String query = httpExchange.getRequestURI().getQuery();
         Map<String, String> result = new HashMap<>();
-        if(query != null) {
+        if (query != null) {
             for (String param : query.split("&")) {
                 String[] entry = param.split("=");
                 if (entry.length > 1) {
@@ -160,9 +164,9 @@ public class ApiHandler implements HttpHandler {
 
         new BufferedReader(new InputStreamReader(input))
                 .lines()
-                .forEach( (String s) -> stringBuilder.append(s + "\n") );
+                .forEach((String s) -> stringBuilder.append(s + "\n"));
 
-        if(!stringBuilder.toString().isEmpty()) {
+        if (!stringBuilder.toString().isEmpty()) {
             result.put("requestBody", stringBuilder.toString());
         }
 
