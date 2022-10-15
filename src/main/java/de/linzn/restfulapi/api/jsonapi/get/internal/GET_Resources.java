@@ -11,6 +11,7 @@
 
 package de.linzn.restfulapi.api.jsonapi.get.internal;
 
+import de.linzn.openJL.system.HardwareResources;
 import de.linzn.restfulapi.api.jsonapi.RequestData;
 import de.linzn.restfulapi.api.jsonapi.IRequest;
 import de.stem.stemSystem.utils.JavaUtils;
@@ -19,11 +20,11 @@ import org.json.JSONObject;
 public class GET_Resources implements IRequest {
     @Override
     public Object proceedRequestData(RequestData requestData) {
-        double load = JavaUtils.getSystemLoad();
-        int cores = JavaUtils.getCoreAmount();
+        double load = HardwareResources.getSystemLoad();
+        int cores = HardwareResources.getCoreAmount();
 
-        double usedMemory = JavaUtils.getUsedMemory();
-        double maxMemory = JavaUtils.getMaxMemory();
+        double usedMemory = HardwareResources.getUsedMemory();
+        double maxMemory = HardwareResources.getMaxMemory();
 
         int cpuLoad = (int) ((load * 100) / cores);
 
