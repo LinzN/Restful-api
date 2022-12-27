@@ -2,3 +2,5 @@ main: de.linzn.restfulapi.RestFulApiPlugin
 name: restful-api
 version: ${project.version}
 depend: [system-chain]
+buildJobName: ${buildServer.jobName}
+buildNumber: ${buildServer.buildNumber}
